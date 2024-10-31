@@ -2,7 +2,7 @@ from graphene import Mutation, Int, Date, Float, Field
 from pkg_resources import require
 
 from app.db.database import session_maker
-from app.db.model import Mission
+from app.db.model import Mission, Target
 from app.gql.types.mission_type import MissionType
 
 
@@ -69,6 +69,27 @@ class UpdateMission(Mutation):
             else:
                 raise Exception('mission not found')
             return UpdateMission(mission=res_mission)
+
+
+class DeleteMission(Mutation):
+    class Arguments:
+        mission_id = Int()
+
+    mission = Field(MissionType)
+
+    @staticmethod
+    def mutate(root, info, mission_id):
+        with session_maker() as session:
+            res_mission:Mission = session.query(Mission).filter(Mission.mission_id == mission_id).first()
+            x = res_mission.targets
+            if res_mission:
+                session.delete(res_mission)
+                session.commit()
+                return DeleteMission(mission=res_mission)
+            else:
+                session.rollback()
+                raise Exception('mission not found')
+
 
 
 
