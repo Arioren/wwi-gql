@@ -32,7 +32,7 @@ class TargetType(ObjectType):
             return (
                 session.query(City)
                 .filter(City.city_id == root.city_id)
-                .all()
+                .first()
             )
 
     @staticmethod
