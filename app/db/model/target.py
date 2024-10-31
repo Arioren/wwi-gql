@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 from app.db.model import Base
@@ -15,6 +15,6 @@ class Target(Base):
 
    mission = relationship('Mission', back_populates="targets")
    city = relationship('City', back_populates="targets")
-   target_type = relationship('TargetType',  back_populates="targets")
+   target_style = relationship('TargetStyle',  back_populates="targets")
 
 
